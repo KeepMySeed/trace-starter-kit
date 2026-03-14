@@ -1,0 +1,19 @@
+log_format: structured
+required_fields:
+  - timestamp
+  - level
+  - trace_id
+  - module_id
+  - contract_id
+  - event_name
+  - message
+recommended_fields:
+  - request_id
+  - actor_id
+  - correlation_id
+  - outcome
+  - duration_ms
+rules:
+  - Критичные операции должны иметь start и completed события
+  - Ошибки должны быть связаны с module_id и contract_id
+  - Идемпотентные сценарии должны явно логировать duplicate detection

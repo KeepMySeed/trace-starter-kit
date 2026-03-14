@@ -1,0 +1,24 @@
+id: CONTRACT.example.module.operation
+module: example.module
+summary: Краткое описание назначения контракта
+inputs:
+  - input_a
+  - input_b
+outputs:
+  - output_a
+invariants:
+  - invariant_1
+  - invariant_2
+failure_modes:
+  - validation_error
+  - external_dependency_error
+linked_requirements:
+  - REQ-1
+  - UC-1
+required_tests:
+  - unit
+required_logs:
+  - example.operation.started
+  - example.operation.completed
+notes:
+  - Что важно помнить при изменениях

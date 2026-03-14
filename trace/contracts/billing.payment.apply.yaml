@@ -1,0 +1,34 @@
+id: CONTRACT.billing.payment.apply
+module: billing.payment
+summary: Применение входящего платежа к счёту с защитой от дублирования
+inputs:
+  - payment_id
+  - invoice_id
+  - amount
+  - source_event_id
+outputs:
+  - applied_payment_id
+  - resulting_invoice_status
+  - reconciliation_state
+invariants:
+  - repeated source_event_id must not produce duplicate effect
+  - applied amount must be non-negative
+  - audit trail must be preserved
+failure_modes:
+  - duplicate_event
+  - invoice_not_found
+  - invalid_amount
+  - reconciliation_error
+linked_requirements:
+  - REQ-18
+  - UC-2
+required_tests:
+  - unit
+  - integration
+  - regression
+required_logs:
+  - payment.apply.started
+  - payment.apply.duplicate_detected
+  - payment.apply.completed
+notes:
+  - Idempotency behavior must remain observable in logs

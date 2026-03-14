@@ -1,0 +1,60 @@
+modules:
+  - id: billing.invoice
+    purpose: Управление жизненным циклом счёта и расчётом сумм
+    owns:
+      - Invoice aggregate
+      - Invoice validation
+      - Tax calculation orchestration
+    depends_on:
+      - common.money
+      - accounting.ledger
+    forbidden_dependencies:
+      - ui.web
+
+  - id: billing.payment
+    purpose: Применение платежей и reconciliation
+    owns:
+      - Payment application
+      - Duplicate payment prevention
+      - Reconciliation hooks
+    depends_on:
+      - billing.invoice
+      - accounting.ledger
+
+  - id: accounting.ledger
+    purpose: Учёт проводок и аудиторский след
+    owns:
+      - Ledger entries
+      - Audit trail
+    depends_on:
+      - common.money
+
+  - id: integration.webhooks
+    purpose: Приём и маршрутизация внешних событий
+    owns:
+      - Webhook intake
+      - Signature validation
+      - Idempotency envelope
+    depends_on:
+      - billing.payment
+      - common.observability
+
+  - id: common.money
+    purpose: Общие денежные типы, правила округления и валютные инварианты
+    owns:
+      - Money value object
+      - Currency rules
+    depends_on: []
+
+  - id: common.observability
+    purpose: Логирование, trace_id и служебные события
+    owns:
+      - Log schema
+      - Trace propagation
+    depends_on: []
+
+architecture_rules:
+  - Контроллеры не работают с БД напрямую
+  - Интеграционные адаптеры не содержат доменной логики расчётов
+  - Общие модули не зависят от бизнес-модулей
+  - Каждое межмодульное взаимодействие должно быть объяснимо через контракт

@@ -1,0 +1,19 @@
+# Node
+node_modules/
+dist/
+coverage/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+
+# TRACE generated artifacts
+trace/graph/repo_map.json
+trace/graph/traceability.json

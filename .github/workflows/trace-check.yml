@@ -1,0 +1,22 @@
+name: trace-check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate-trace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Generate repo map
+        run: python scripts/generate_repo_map.py
+      - name: Check required TRACE files
+        run: |
+          test -f trace/intent/purpose.yaml
+          test -f trace/intent/stack_guardrails.yaml
+          test -f trace/architecture/architecture_map.yaml
+          test -f AGENT.md

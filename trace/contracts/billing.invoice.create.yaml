@@ -1,0 +1,34 @@
+id: CONTRACT.billing.invoice.create
+module: billing.invoice
+summary: Создание нового счёта на основе входных данных клиента
+inputs:
+  - customer_id
+  - currency
+  - line_items
+  - invoice_date
+outputs:
+  - invoice_id
+  - total_amount
+  - tax_amount
+  - status
+invariants:
+  - total_amount >= 0
+  - currency must be supported
+  - tax lines must be explicit and reproducible
+failure_modes:
+  - invalid_customer
+  - invalid_currency
+  - empty_line_items
+  - validation_error
+linked_requirements:
+  - REQ-12
+  - UC-1
+required_tests:
+  - unit
+  - integration
+required_logs:
+  - invoice.create.started
+  - invoice.create.validated
+  - invoice.create.completed
+notes:
+  - Public API must remain backward compatible unless separately approved
